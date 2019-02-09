@@ -1,5 +1,6 @@
 (ns chicago.core
-  (:require [clj-3df.core :as df :use [exec!]]))
+  (:require [clj-3df.core :as df :use [exec!]]
+            [chicago.diff-formatter :as formatter]))
 
 (def schema
   {:thug/name      {:db/valueType :String}
@@ -145,7 +146,7 @@
 
 (comment
   (do
-    (def conn (df/create-debug-publication "ws://127.0.0.1:6262"))
+    (def conn (df/create-publication "ws://127.0.0.1:6262" (comp clojure.pprint/pprint formatter/format-diffs)))
     (exec! conn (df/create-db-inputs db)))
 
   (exec! conn (df/transact db initial-data))
