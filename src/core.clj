@@ -132,6 +132,7 @@
     (subordinate? ?s ?b)
     [chic/rats ?s ?sub]])
 
+(declare conn)
 (defn turn-to-rat [desc prob diffs]
   (doseq [[[rat name earnings] _time diff] diffs]
     (let [is-rat (< (rand) prob)]
