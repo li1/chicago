@@ -55,6 +55,8 @@
     :thug/earnings  125
     :thug/territory 2}])
 
+;; the with clause might be unnecessary in the future
+;; where we default to bag semantics. we play it safe here.
 (def territory-earnings
   '[:find ?territory (sum ?earnings)
     :with ?t
@@ -63,6 +65,8 @@
     [?t :thug/territory ?terr]
     [?t :thug/earnings ?earnings]])
 
+;; we can't completely push this into rules.
+;; rules don't support aggregate fns yet
 (def sub-earnings
   '[:find ?b ?boss (sum ?earnings)
     :with ?t
@@ -83,8 +87,20 @@
      [?sub :thug/boss ?middleman]
      (subordinate? ?middleman ?boss)]])
 
-;; note: we couldn't build thug-earnings with a sub-earnings rule,
-;; since those don't support aggregates
+(comment
+;; in this first version, we're missing lowest level results.
+;; for them, chic/sub-earnings can't be satisfied by datalog.
+;; this bubbles up and the whole query fails.
+;; in the future, default values may solve this, for now we
+;; need a workaround.
+  (def thug-total-earnings
+    '[:find ?t ?thug ?earnings
+      :where
+      [?t :thug/name ?thug]
+      [?t :thug/earnings ?thug-earnings]
+      [chic/sub-earnings ?t ?thug ?sub-earnings]
+      [(add ?thug-earnings ?sub-earnings) ?earnings]]))
+
 (def thug-total-earnings
     '[:find ?t ?thug ?earnings
       :where
@@ -97,16 +113,11 @@
                [(add ?thug-earnings ?sub-earnings) ?earnings]))])
 
 (comment
-;; in this first version, we're missing the lowest level
-;; since sub-earnings is empty for them and the whole
-;; query doesn't resolve and we don't support default values yet
-  (def thug-earnings
-    '[:find ?t ?thug ?earnings
-      :where
-      [?t :thug/name ?thug]
-      [?t :thug/earnings ?thug-earnings]
-      [chic/sub-earnings ?t ?thug ?sub-earnings]
-      [(add ?thug-earnings ?sub-earnings) ?earnings]]))
+  ;; if we don't need chic/sub-earnings,
+  ;; we could rewrite chic/thug-total-earnings recursively
+
+  ;; proof left as exercise to the reader
+  )
 
 (def rats
   '[:find ?t ?thug
