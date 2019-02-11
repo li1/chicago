@@ -3,7 +3,7 @@ Using 3DF to manage Al Capone's crime empire
 
 ## Note
 
-This is the source for my blogpost [Dataflows you can't refuse](https://maltesandstede.com/clojure/3df/2019/02/10/dataflows-you-cant-refuse.html).
+This is the source for my blogpost [Dataflows you can't refuse](https://maltesandstede.com/clojure/3df/2019/02/10/dataflows-you-cant-refuse.html), also published on [our company blog](https://www.clockworks.io/2019/02/10/dataflows-you-cant-refuse.html).
 
 ## Run this
 
