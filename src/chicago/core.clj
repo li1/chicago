@@ -1,6 +1,10 @@
 (ns chicago.core
   (:require [clj-3df.core :as df :use [exec!]]
-            [chicago.diff-formatter :as formatter]))
+            [chicago.diff-formatter :as formatter])
+  (:gen-class))
+
+(defn -main [& args]
+  (println "welcome good sir"))
 
 (def schema
   {:thug/name      {:db/valueType :String}
@@ -168,3 +172,6 @@
   (exec! conn (df/transact db [[:db/retract 10 :thug/earnings 125]
                                [:db/add 10 :thug/earnings 550]]))
 )
+
+(Thread/sleep 3000)
+(System/exit 0)

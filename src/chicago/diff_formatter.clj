@@ -1,4 +1,5 @@
-(ns chicago.diff-formatter)
+(ns chicago.diff-formatter
+  (:gen-class))
 
 (defn- extract-contents [[_ var-map time diff]]
   (let [vars (map (comp read-string second) (re-seq #"\{\".*?\":(.*?)\}" var-map))]
